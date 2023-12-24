@@ -1,3 +1,5 @@
+[DEMO LINK](https://oksana-kyryienko.github.io/vue_weather/)
+
 Weather App API Documentation
 Introduction
 The Weather App API provides functionality to retrieve weather information, including current weather, hourly temperature data, and a five-day weather forecast. The API is integrated with Mapbox and OpenWeatherMap to obtain location suggestions and weather data.
