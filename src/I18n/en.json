@@ -1,0 +1,14 @@
+{
+  "buttons": {
+    "switch": "Switch to Night Mode",
+    "addFavorites": "Add to Favorites",
+    "remove": "Remove",
+    "add": "Add Weather Card",
+    "removeFavorites": "Remove from Favorites",
+    "showWeekly": "Show Weekly",
+    "showToday": "Show Today",
+    "yes": "Yes",
+    "no": "No"
+
+  }
+}

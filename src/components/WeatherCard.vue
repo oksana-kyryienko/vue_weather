@@ -2,7 +2,12 @@
 
 <template>
   <div class="weather-card">
-    <button @click="removeWeatherCard" class="remove-card-btn">Remove</button>
+    <button 
+      @click="removeWeatherCard" 
+      class="remove-card-btn"
+      :disabled="isFavoritePage"
+    >Remove
+    </button>
     <div class="card-content">
       <div v-if="error">
         <message-error-modal
@@ -32,8 +37,12 @@
         </li>
       </ul>
       <div class="favorites-btn">
-        <button @click="addToFavorites" class="add-to-favorites-btn">Add to Favorites</button>
-        <button @click="removeFromFavorites" class="remove-from-favorites-btn">
+        <button 
+          @click="addToFavorites" 
+          class="add-to-favorites-btn"
+          :disabled="isFavoritePage"
+        >Add to Favorites</button>
+        <button @click="removeFromFavorites" :disabled="isCard" class="remove-from-favorites-btn">
           Remove From Favorites
         </button>
       </div>
@@ -111,7 +120,8 @@ export default {
   props: {
     initialCity: String,
     index: Number,
-    isFavoritePage: Boolean
+    isFavoritePage: Boolean,
+    isCard: Boolean
   },
   emits: ['remove', 'remove-from-favorites', 'add-to-favorites'],
 
@@ -331,6 +341,12 @@ export default {
 .remove-from-favorites-btn:hover {
   background-color: #92ec95;
 }
+
+.add-to-favorites-btn:disabled, .remove-from-favorites-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .hourly-temperature {
   margin-top: 10px;
 }
@@ -354,6 +370,11 @@ export default {
 
 .remove-card-btn:hover {
   background-color: coral;
+}
+
+.remove-card-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed; 
 }
 
 .current-date {

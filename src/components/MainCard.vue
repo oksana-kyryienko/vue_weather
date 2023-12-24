@@ -14,6 +14,7 @@
         @remove="removeWeatherCard"
         @add-to-favorites="addToFavorites"
         :isDayMode="isDayMode"    
+        :isCard="true"
       />
       <button @click="addWeatherCard" class="add-card-btn">Add Weather Card</button>
     </div>
