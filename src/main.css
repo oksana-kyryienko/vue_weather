@@ -1,0 +1,19 @@
+.modal-btn {
+  margin-right: 10px;
+  padding: 8px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid green;
+  width: 40px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.modal-btn:hover {
+  transform: scale(1.1);
+}
+button {
+  cursor: pointer;
+  outline: none;
+  border-radius: 10px;
+}

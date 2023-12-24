@@ -1,17 +1,18 @@
+// main.js
 
-import { createApp } from 'vue';
+import { createApp } from 'vue'
+import App from './App.vue'
 
-import App from './App.vue';
-import router from './router';
-import axios from 'axios';
+import router from './router'
+import axios from 'axios'
+import './reset.css'
+import './main.css'
+import store from './store'
 
-const app = createApp(App);
+const app = createApp(App)
 
+app.config.globalProperties.$axios = axios
 
-// Global registration of axios
-app.config.globalProperties.$axios = axios;
-
-
-
-app.use(router);
-app.mount('#app');
+app.use(router)
+app.use(store)
+app.mount('#app')

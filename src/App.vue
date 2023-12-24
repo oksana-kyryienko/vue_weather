@@ -1,21 +1,14 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-
 </script>
 
 <template>
   <header>
-   
-
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/">Weather</RouterLink>
+        <RouterLink to="/favorites">Favorites</RouterLink>
       </nav>
-      <HelloWorld msg="You did it!" />
-
-     
     </div>
   </header>
 
@@ -23,6 +16,13 @@ import HelloWorld from './components/HelloWorld.vue'
 </template>
 
 <style scoped>
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -37,11 +37,13 @@ nav {
   width: 100%;
   font-size: 12px;
   text-align: center;
-  margin-top: 2rem;
+  background-color: lightgreen;
+  padding: 20px;
 }
 
 nav a.router-link-exact-active {
-  color: var(--color-text);
+  color: #3200ed;
+  text-decoration: underline;
 }
 
 nav a.router-link-exact-active:hover {
@@ -52,10 +54,22 @@ nav a {
   display: inline-block;
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
+  font-size: large;
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+  transition:
+    color 0.3s ease,
+    transform 0.3s ease;
 }
 
 nav a:first-of-type {
   border: 0;
+}
+
+nav a:hover {
+  color: red;
+  transform: scale(1.1);
 }
 
 @media (min-width: 1024px) {
@@ -76,12 +90,11 @@ nav a:first-of-type {
   }
 
   nav {
-    text-align: left;
-    margin-left: -1rem;
+    text-align: center;
+
     font-size: 1rem;
 
     padding: 1rem 0;
-    margin-top: 1rem;
   }
 }
 </style>
