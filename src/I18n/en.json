@@ -1,6 +1,7 @@
 {
   "buttons": {
-    "switch": "Switch to Night Mode",
+    "switchNight": "Switch to Night Mode",
+    "switchDay": "Switch to Day Mode",
     "addFavorites": "Add to Favorites",
     "remove": "Remove",
     "add": "Add Weather Card",

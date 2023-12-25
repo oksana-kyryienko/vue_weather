@@ -121,7 +121,8 @@ export default {
     initialCity: String,
     index: Number,
     isFavoritePage: Boolean,
-    isCard: Boolean
+    isCard: Boolean,
+    isDayMode: Boolean,
   },
   emits: ['remove', 'remove-from-favorites', 'add-to-favorites'],
 

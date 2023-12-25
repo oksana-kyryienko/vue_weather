@@ -7,17 +7,14 @@ import router from './router'
 import axios from 'axios'
 import './reset.css'
 import './main.css'
-import { createI18n, useI18n } from 'vue-i18n'
 
-const i18n = createI18n({
-  legacy: false,
-  fullbackLockale: 'en'
-  
-})
+import i18n from './I18n'
+
 
 const app = createApp(App)
 
 app.config.globalProperties.$axios = axios
+app.use(i18n)
 
 app.use(router)
 app.mount('#app')

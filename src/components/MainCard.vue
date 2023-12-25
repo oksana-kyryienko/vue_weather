@@ -1,6 +1,5 @@
 <!-- MainCard.vue -->
 <template>
- 
   <div :class="['container', { 'night-mode': !isDayMode }]">
     <button @click="toggleDayNightMode" class="toggle-day-night-btn">
       {{ isDayMode ? 'Switch to Night Mode' : 'Switch to Day Mode' }}
@@ -13,7 +12,7 @@
         :initialCity="cityData.name"
         @remove="removeWeatherCard"
         @add-to-favorites="addToFavorites"
-        :isDayMode="isDayMode"    
+        :isDayMode="isDayMode"
         :isCard="true"
       />
       <button @click="addWeatherCard" class="add-card-btn">Add Weather Card</button>
@@ -38,6 +37,7 @@
 import { getHourlyTemperatureData, getWeatherData } from '@/api/weatherApi'
 import WeatherCard from '@/components/WeatherCard.vue'
 import MessageErrorModal from '@/components/Modals/MessageErrorModal.vue'
+import { getCityByIp } from '@/api/cityUserApi'
 
 export default {
   components: {
@@ -53,29 +53,46 @@ export default {
       cityNames: ['Kyiv', 'AnotherCity'],
       error: null,
       showMaxCardsModal: false,
-      isDayMode: true, 
+      isDayMode: true
     }
   },
-  created() {
-    this.addWeatherCard()
-  },
 
+  async created() {
+    try {
+      const defaultCity = await getCityByIp()
+      console.log('Default city:', defaultCity)
+
+      await this.addWeatherCard(defaultCity || 'Kyiv')
+    } catch (error) {
+      console.error('Error fetching default city:', error)
+      this.error = 'Failed to fetch default city'
+    }
+  },
   methods: {
     toggleDayNightMode() {
       this.isDayMode = !this.isDayMode
     },
     async addWeatherCard() {
       try {
-        if (this.weatherData.length < 5) {
-          const data = await getWeatherData('Kyiv')
+        const defaultCity = await getCityByIp()
+        const cityName = defaultCity || 'Kyiv'
+
+        const cityCardCount = this.weatherData.filter(
+          (cityData) => cityData.name.toLowerCase() === cityName.toLowerCase()
+        ).length
+
+        if (cityCardCount < 5) {
+          const data = await getWeatherData(cityName)
           this.weatherData.push(data)
+
           const newIndex = this.weatherData.length - 1
-          await getHourlyTemperatureData('Kyiv', newIndex)
+          await getHourlyTemperatureData(cityName, newIndex)
         } else {
           this.showMaxCardsModal = true
         }
       } catch (error) {
         console.error('Error adding weather card:', error)
+        console.error('Error details:', error.response || error.request || error.message || error)
         this.error = 'Failed to add weather card'
       }
     },
@@ -110,7 +127,6 @@ export default {
 </script>
 
 <style scoped>
-
 .toggle-day-night-btn {
   background-color: darkslateblue;
   color: white;
@@ -147,5 +163,4 @@ export default {
 .max-cards-message {
   color: red;
 }
-
 </style>
