@@ -1,5 +1,8 @@
 <!-- MainCard.vue -->
 <template>
+    <div v-if="loading">
+    <Loader />
+  </div>
   <div :class="['container', { 'night-mode': !isDayMode }]">
     <button @click="toggleDayNightMode" class="toggle-day-night-btn">
       {{ isDayMode ? 'Switch to Night Mode' : 'Switch to Day Mode' }}
@@ -37,11 +40,13 @@
 import { getHourlyTemperatureData, getWeatherData } from '@/api/weatherApi'
 import WeatherCard from '@/components/WeatherCard.vue'
 import MessageErrorModal from '@/components/Modals/MessageErrorModal.vue'
+import Loader from '@/components/LoaderUi.vue'
 
 export default {
   components: {
     WeatherCard,
-    MessageErrorModal
+    MessageErrorModal,
+    Loader
   },
   emits: ['remove', 'remove-from-favorites', 'add-to-favorites'],
 
@@ -52,7 +57,8 @@ export default {
       cityNames: ['Kyiv', 'AnotherCity'],
       error: null,
       showMaxCardsModal: false,
-      isDayMode: true
+      isDayMode: true,
+      loading: false
     }
   },
 
@@ -65,6 +71,7 @@ export default {
     },
     async addWeatherCard() {
       try {
+        this.loading = true
         if (this.weatherData.length < 5) {
           const data = await getWeatherData('Kyiv')
           this.weatherData.push(data)
@@ -76,6 +83,8 @@ export default {
       } catch (error) {
         console.error('Error adding weather card:', error)
         this.error = 'Failed to add weather card'
+      } finally {
+        this.loading = false
       }
     },
 
