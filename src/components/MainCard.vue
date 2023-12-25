@@ -37,7 +37,6 @@
 import { getHourlyTemperatureData, getWeatherData } from '@/api/weatherApi'
 import WeatherCard from '@/components/WeatherCard.vue'
 import MessageErrorModal from '@/components/Modals/MessageErrorModal.vue'
-import { getCityByIp } from '@/api/cityUserApi'
 
 export default {
   components: {
@@ -57,16 +56,8 @@ export default {
     }
   },
 
-  async created() {
-    try {
-      const defaultCity = await getCityByIp()
-      console.log('Default city:', defaultCity)
-
-      await this.addWeatherCard(defaultCity || 'Kyiv')
-    } catch (error) {
-      console.error('Error fetching default city:', error)
-      this.error = 'Failed to fetch default city'
-    }
+  created() {
+    this.addWeatherCard()
   },
   methods: {
     toggleDayNightMode() {
@@ -74,25 +65,16 @@ export default {
     },
     async addWeatherCard() {
       try {
-        const defaultCity = await getCityByIp()
-        const cityName = defaultCity || 'Kyiv'
-
-        const cityCardCount = this.weatherData.filter(
-          (cityData) => cityData.name.toLowerCase() === cityName.toLowerCase()
-        ).length
-
-        if (cityCardCount < 5) {
-          const data = await getWeatherData(cityName)
+        if (this.weatherData.length < 5) {
+          const data = await getWeatherData('Kyiv')
           this.weatherData.push(data)
-
           const newIndex = this.weatherData.length - 1
-          await getHourlyTemperatureData(cityName, newIndex)
+          await getHourlyTemperatureData('Kyiv', newIndex)
         } else {
           this.showMaxCardsModal = true
         }
       } catch (error) {
         console.error('Error adding weather card:', error)
-        console.error('Error details:', error.response || error.request || error.message || error)
         this.error = 'Failed to add weather card'
       }
     },
