@@ -7,8 +7,7 @@ import { RouterLink, RouterView } from 'vue-router'
   <header>
     <div class="wrapper">
       <nav>
-        <!-- <RouterLink to="/">Weather</RouterLink> -->
-        <RouterLink to="/">{{ $t('weather') }}</RouterLink>
+        <RouterLink to="/">Weather</RouterLink>
         <RouterLink to="/favorites">Favorites</RouterLink>
       </nav>
   
