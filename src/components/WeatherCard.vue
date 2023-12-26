@@ -108,7 +108,7 @@ import HourlyTemperatureChart from '@/components/HourlyTemperatureChart.vue'
 import { getCurrentDate } from '@/utils/currentDate'
 import { convertKelvinToCelsius } from '@/utils/convertTemperature'
 import { formatDate } from '@/utils/formatDate'
-
+import { getUserLocation } from '@/api/userLocationApi'
 const DEBOUNCE_DELAY = 300
 
 export default {
@@ -142,10 +142,17 @@ export default {
     }
   },
   watch: {
-    '$i18n.locale': 'getFiveDayForecast'
+    '$i18n.locale': 'getFiveDayForecast',
+    
   },
   async created() {
-    this.getWeatherDataForCity()
+    try {
+      this.cityName =  (await getUserLocation() || this.initialCity)
+      this.getWeatherDataForCity()
+    } catch (error) {
+      console.error('Error fetching user location:', error)
+    }
+
   },
   methods: {
     async getWeatherDataForCity() {

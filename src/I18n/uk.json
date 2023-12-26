@@ -42,7 +42,8 @@
     "moderate snow": "помірний сніг",
     "heavy snow": "сильний сніг",
     "thunderstorm": "гроза",
-    "mist": "туман"
+    "mist": "туман",
+    "heavy intensity rain": "сильний дощ"
   },
   "Mon": "Пон",
   "Tue": "Вівт",
@@ -89,5 +90,6 @@
     "Nov": "Листопад",
     "Dec": "Грудень"
   },
-  "notAvailable": "не доступно"
+  "notAvailable": "не доступно",
+  "Vyshneve": "Вишневе"
 }

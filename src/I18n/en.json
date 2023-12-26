@@ -42,7 +42,8 @@
     "moderate snow": "moderate snow",
     "heavy snow": "heavy snow",
     "thunderstorm": "thunderstorm",
-    "mist": "mist"
+    "mist": "mist",
+    "heavy intensity rain": "heavy intensity rain"
   },
   "Mon": "Mon",
   "Tue": "Tue",
@@ -89,5 +90,6 @@
     "Nov": "November",
     "Dec": "December"
   },
-  "notAvailable": "not Available"
+  "notAvailable": "not Available",
+  "Vyshneve": "Vyshneve"
 }
