@@ -1,4 +1,4 @@
- <!-- WeatherCard.vue -->
+<!-- WeatherCard.vue -->
 
 <template>
   <div class="weather-card">
@@ -14,6 +14,7 @@
           @close-modal="clearError"
         />
       </div>
+
       <div class="search-container">
         <input
           v-model="cityName"
@@ -23,6 +24,7 @@
           :readonly="isFavoritePage"
         />
       </div>
+
       <ul v-if="citySuggestions.length" class="suggestions-list">
         <li
           v-for="(suggestion, index) in citySuggestions"
@@ -33,6 +35,7 @@
           {{ suggestion }}
         </li>
       </ul>
+
       <div class="favorites-btn">
         <button @click="addToFavorites" class="add-to-favorites-btn" :disabled="isFavoritePage">
           {{ $t('buttons.addFavorites') }}
@@ -109,6 +112,7 @@ import { getCurrentDate } from '@/utils/currentDate'
 import { convertKelvinToCelsius } from '@/utils/convertTemperature'
 import { formatDate } from '@/utils/formatDate'
 import { getUserLocation } from '@/api/userLocationApi'
+
 const DEBOUNCE_DELAY = 300
 
 export default {
@@ -142,17 +146,15 @@ export default {
     }
   },
   watch: {
-    '$i18n.locale': 'getFiveDayForecast',
-    
+    '$i18n.locale': 'getFiveDayForecast'
   },
   async created() {
     try {
-      this.cityName =  (await getUserLocation() || this.initialCity)
+      this.cityName = (await getUserLocation()) || this.initialCity
       this.getWeatherDataForCity()
     } catch (error) {
       console.error('Error fetching user location:', error)
     }
-
   },
   methods: {
     async getWeatherDataForCity() {
@@ -253,7 +255,6 @@ export default {
     },
     getCurrentDate() {
       return getCurrentDate.call(this)
-  
     },
 
     getWeatherIconUrl(iconCode) {
@@ -275,7 +276,6 @@ export default {
   }
 }
 </script>
-
 
 <style scoped>
 .suggestion-item {
