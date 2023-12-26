@@ -1,8 +1,8 @@
 <template>
   <modal-main :visible="visible">
     <p>{{ $t('confirmationRemoveCard') }}</p>
-    <button @click="confirmRemove" class="modal-btn">Yes</button>
-    <button @click="cancelRemove" class="modal-btn">No</button>
+    <button @click="confirmRemove" class="modal-btn">{{ $t('buttons.yes') }}</button>
+    <button @click="cancelRemove" class="modal-btn">{{ $t('buttons.no') }}</button>
   </modal-main>
 </template>
 
