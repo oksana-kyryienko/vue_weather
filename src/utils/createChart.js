@@ -2,6 +2,7 @@ import Chart from 'chart.js/auto'
 import { convertKelvinToCelsius } from '@/utils/convertTemperature'
 
 export function createChart(canvas, data) {
+
   const chart = new Chart(canvas, {
     type: 'line',
     data: {

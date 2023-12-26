@@ -68,7 +68,6 @@ export async function getFiveDayForecast(cityName, t) {
       return accumulator
     }, {})
 
-
     const fiveDayForecast = Object.values(dailyData).map((day) => {
       const firstDescription = [...day.descriptions][0]
       const firstIcon = [...day.icons][0]

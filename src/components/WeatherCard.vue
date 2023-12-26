@@ -1,4 +1,4 @@
-<!-- WeatherCard.vue -->
+ <!-- WeatherCard.vue -->
 
 <template>
   <div class="weather-card">
@@ -85,10 +85,7 @@
         </ul>
       </div>
 
-      <div class="hourly-temperature">
-        <h3>{{ $t('hourlyTemperatureChart') }}</h3>
-        <canvas :ref="'temperatureChart_' + index"></canvas>
-      </div>
+      <hourly-temperature-chart :index="index" :data="hourlyTemperatureData" />
     </div>
   </div>
 
@@ -106,10 +103,11 @@ import _debounce from 'lodash/debounce'
 import { getCitySuggestions } from '@/api/cityApi'
 import AddToFavoritesModal from '@/components/Modals/AddToFavoritesModal.vue'
 import RemoveConfirmationModal from '@/components/Modals/RemoveConfirmationModal.vue'
-import { createChart } from '@/utils/createChart'
+import MessageErrorModal from '@/components/Modals/MessageErrorModal.vue'
+import HourlyTemperatureChart from '@/components/HourlyTemperatureChart.vue'
 import { getCurrentDate } from '@/utils/currentDate'
 import { convertKelvinToCelsius } from '@/utils/convertTemperature'
-import MessageErrorModal from '@/components/Modals/MessageErrorModal.vue'
+import { formatDate } from '@/utils/formatDate'
 
 const DEBOUNCE_DELAY = 300
 
@@ -117,7 +115,8 @@ export default {
   components: {
     AddToFavoritesModal,
     RemoveConfirmationModal,
-    MessageErrorModal
+    MessageErrorModal,
+    HourlyTemperatureChart
   },
   props: {
     initialCity: String,
@@ -138,7 +137,8 @@ export default {
       showRemoveConfirmation: false,
       showAddToFavoritesModal: false,
       isWeeklyView: false,
-      weeklyWeather: []
+      weeklyWeather: [],
+      hourlyTemperatureData: []
     }
   },
   watch: {
@@ -165,26 +165,12 @@ export default {
     async getHourlyTemperatureData() {
       try {
         const data = await getHourlyTemperatureData(this.cityName)
-        this.createTemperatureChart(data)
+        this.hourlyTemperatureData = data
       } catch (error) {
         console.error('Error fetching hourly temperature data:', error)
         this.error = 'Failed to fetch hourly temperature data'
       }
     },
-    createTemperatureChart(data) {
-      this.$nextTick(() => {
-        const canvas = this.$refs['temperatureChart_' + this._uid]
-        if (!canvas) {
-          console.error('Canvas element not found.')
-          return
-        }
-        if (this.temperatureChart) {
-          this.temperatureChart.destroy()
-        }
-        this.temperatureChart = createChart(canvas, data)
-      })
-    },
-
     async getFiveDayForecast() {
       try {
         const response = await getFiveDayForecast(this.cityName, this.$t)
@@ -212,16 +198,9 @@ export default {
         this.getFiveDayForecast()
       }
     },
-
     formatDate(date) {
-      return new Intl.DateTimeFormat(this.$i18n.locale, {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      }).format(date)
+      return formatDate(date, this.$i18n.locale)
     },
-
     convertKelvinToCelsius(kelvin) {
       return convertKelvinToCelsius(kelvin)
     },
@@ -288,6 +267,7 @@ export default {
   }
 }
 </script>
+
 
 <style scoped>
 .suggestion-item {
