@@ -5,9 +5,9 @@
   </div>
   <div :class="['container', { 'night-mode': !isDayMode }]">
     <button @click="toggleDayNightMode" class="toggle-day-night-btn">
-      {{ isDayMode ? 'Switch to Night Mode' : 'Switch to Day Mode' }}
+      {{ isDayMode ? $t('buttons.switchNight') : $t('buttons.switchDay') }}
     </button>
-    <h2 class="title">Weather Information</h2>
+    <h2 class="title">{{ $t('weatherInfo') }}</h2>
     <div v-if="weatherData">
       <weather-card
         v-for="cityData in weatherData"
@@ -18,19 +18,19 @@
         :isDayMode="isDayMode"
         :isCard="true"
       />
-      <button @click="addWeatherCard" class="add-card-btn">Add Weather Card</button>
+      <button @click="addWeatherCard" class="add-card-btn">{{ $t ('buttons.addCard') }}</button>
     </div>
     <div v-else>
-      <p>Loading...</p>
+      <p>{{ $t('loading') }}...</p>
     </div>
     <div v-if="error">
-      <p>Error: {{ error }}</p>
+      <p>{{ $t('error') }}: {{ error }}</p>
     </div>
 
     <message-error-modal
       :visible="showMaxCardsModal"
-      :customStyles="{ width: '300px', height: '150px' }"
-      :errorMessage="'Maximum number of cards reached (5). Please remove the card to add a new card'"
+      :customStyles="{ height: '150px' }"
+      :errorMessage="$t('errorMesMax')"
       @close-modal="closeMaxCardsModal"
     />
   </div>

@@ -2,11 +2,8 @@
 
 <template>
   <div class="weather-card">
-    <button 
-      @click="removeWeatherCard" 
-      class="remove-card-btn"
-      :disabled="isFavoritePage"
-    >Remove
+    <button @click="removeWeatherCard" class="remove-card-btn" :disabled="isFavoritePage">
+      {{ $t('buttons.remove') }}
     </button>
     <div class="card-content">
       <div v-if="error">
@@ -21,7 +18,7 @@
         <input
           v-model="cityName"
           @input="debouncedGetCitySuggestions"
-          placeholder="Enter city name"
+          :placeholder="$t('placeholderCity')"
           class="search-input"
           :readonly="isFavoritePage"
         />
@@ -37,23 +34,22 @@
         </li>
       </ul>
       <div class="favorites-btn">
-        <button 
-          @click="addToFavorites" 
-          class="add-to-favorites-btn"
-          :disabled="isFavoritePage"
-        >Add to Favorites</button>
+        <button @click="addToFavorites" class="add-to-favorites-btn" :disabled="isFavoritePage">
+          {{ $t('buttons.addFavorites') }}
+        </button>
         <button @click="removeFromFavorites" :disabled="isCard" class="remove-from-favorites-btn">
-          Remove From Favorites
+          {{ $t('buttons.removeFavorites') }}
         </button>
       </div>
 
       <button @click="toggleView" class="toggle-view-btn">
-        {{ isWeeklyView ? 'Show Today' : 'Show Weekly' }}
+        {{ isWeeklyView ? $t('buttons.showToday') : $t('buttons.showWeekly') }}
       </button>
 
       <div v-if="!isWeeklyView">
         <p class="current-date">{{ getCurrentDate() }}</p>
-        <p class="city-name">City: {{ cityData ? cityData.name : 'N/A' }}</p>
+
+        <p class="city-name">{{ $t('city') }}: {{ cityData ? $t(cityData.name) : 'N/A' }}</p>
         <img
           v-if="cityData && cityData.weather && cityData.weather[0].icon"
           :src="getWeatherIconUrl(cityData.weather[0].icon)"
@@ -61,20 +57,26 @@
           class="weather-icon"
         />
         <p class="temperature">
-          Temperature: {{ cityData ? convertKelvinToCelsius(cityData.main.temp) : 'N/A' }}°C
+          {{ $t('temp') }}: {{ cityData ? convertKelvinToCelsius(cityData.main.temp) : 'N/A' }}°C
         </p>
-        <p class="description">
-          Description: {{ cityData && cityData.weather ? cityData.weather[0].description : 'N/A' }}
+
+        <p>
+          {{ $t('description') }}:
+          {{
+            cityData && cityData.weather
+              ? $t(`descriptionWeather.${cityData.weather[0].description}`)
+              : $t('notAvailable')
+          }}
         </p>
       </div>
 
       <div v-else>
-        <h3>Weekly Weather Forecast</h3>
+        <h3>{{ $t('weeklyForecast') }}</h3>
         <ul class="weekly-list" v-if="weeklyWeather.length > 0">
           <li class="weekly-item" v-for="(day, index) in weeklyWeather" :key="index">
             <p>{{ formatDate(day.date) }}</p>
 
-            <p>Temperature: {{ convertKelvinToCelsius(day.temperature) }}°C</p>
+            <p>{{ $t('temp') }}: {{ convertKelvinToCelsius(day.temperature) }}°C</p>
             <img :src="getWeatherIconUrl(day.icon)" alt="Weather Icon" v-if="day.icon" />
 
             <p>{{ day.description }}</p>
@@ -84,7 +86,7 @@
       </div>
 
       <div class="hourly-temperature">
-        <h3>Hourly Temperature Chart</h3>
+        <h3>{{ $t('hourlyTemperatureChart') }}</h3>
         <canvas :ref="'temperatureChart_' + index"></canvas>
       </div>
     </div>
@@ -122,7 +124,7 @@ export default {
     index: Number,
     isFavoritePage: Boolean,
     isCard: Boolean,
-    isDayMode: Boolean,
+    isDayMode: Boolean
   },
   emits: ['remove', 'remove-from-favorites', 'add-to-favorites'],
 
@@ -138,6 +140,9 @@ export default {
       isWeeklyView: false,
       weeklyWeather: []
     }
+  },
+  watch: {
+    '$i18n.locale': 'getFiveDayForecast'
   },
   async created() {
     this.getWeatherDataForCity()
@@ -182,7 +187,7 @@ export default {
 
     async getFiveDayForecast() {
       try {
-        const response = await getFiveDayForecast(this.cityName)
+        const response = await getFiveDayForecast(this.cityName, this.$t)
         const weeklyData = response.slice(0, 5)
 
         this.weeklyWeather = weeklyData.map((item) => ({
@@ -196,6 +201,9 @@ export default {
         this.error = 'Failed to fetch five-day forecast data'
       }
     },
+    async reloadWeatherDataWithNewLanguage() {
+      await this.getFiveDayForecast()
+    },
 
     toggleView() {
       this.isWeeklyView = !this.isWeeklyView
@@ -204,8 +212,9 @@ export default {
         this.getFiveDayForecast()
       }
     },
+
     formatDate(date) {
-      return new Intl.DateTimeFormat('en-US', {
+      return new Intl.DateTimeFormat(this.$i18n.locale, {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
@@ -259,6 +268,7 @@ export default {
     getCurrentDate() {
       return getCurrentDate()
     },
+
     getWeatherIconUrl(iconCode) {
       return `https://openweathermap.org/img/w/${iconCode}.png`
     },
@@ -343,7 +353,8 @@ export default {
   background-color: #92ec95;
 }
 
-.add-to-favorites-btn:disabled, .remove-from-favorites-btn:disabled {
+.add-to-favorites-btn:disabled,
+.remove-from-favorites-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -375,7 +386,7 @@ export default {
 
 .remove-card-btn:disabled {
   opacity: 0.5;
-  cursor: not-allowed; 
+  cursor: not-allowed;
 }
 
 .current-date {

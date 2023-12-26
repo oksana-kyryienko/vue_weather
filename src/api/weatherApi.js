@@ -7,7 +7,6 @@ export async function getWeatherData(cityName) {
     const response = await axios.get(
       `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`
     )
-    console.log(cityName)
     return response.data
   } catch (error) {
     console.error(`Error fetching weather data for ${cityName}:`, error)
@@ -35,34 +34,42 @@ export async function getHourlyTemperatureData(cityName) {
   }
 }
 
-export async function getFiveDayForecast(cityName) {
+export async function getFiveDayForecast(cityName, t) {
   try {
     const response = await axios.get(
       `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&cnt=40`
     )
 
     const dailyData = response.data.list.reduce((accumulator, item) => {
-      const date = new Date(item.dt * 1000).toLocaleDateString()
-      if (!accumulator[date]) {
-        accumulator[date] = {
-          date: new Date(item.dt * 1000),
+      const date = new Date(item.dt * 1000)
+      const translatedDate = new Intl.DateTimeFormat(t.locale, {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }).format(date)
+
+      if (!accumulator[translatedDate]) {
+        accumulator[translatedDate] = {
+          date,
           temperatures: [],
           descriptions: new Set(),
           icons: new Set()
         }
       }
 
-      accumulator[date].temperatures.push(item.main.temp)
-      accumulator[date].descriptions.add(item.weather[0].description)
-      accumulator[date].icons.add(item.weather[0].icon)
+      accumulator[translatedDate].temperatures.push(item.main.temp)
+
+      const translatedDescription = t(`descriptionWeather.${item.weather[0].description}`)
+      accumulator[translatedDate].descriptions.add(translatedDescription)
+
+      accumulator[translatedDate].icons.add(item.weather[0].icon)
 
       return accumulator
     }, {})
 
-    console.log(dailyData)
 
     const fiveDayForecast = Object.values(dailyData).map((day) => {
-      console.log([...new Set(day.descriptions)])
       const firstDescription = [...day.descriptions][0]
       const firstIcon = [...day.icons][0]
       return {

@@ -32,6 +32,7 @@ export default {
 .error-message {
   color: red;
   margin-bottom: 10px;
+  white-space: break-spaces;
 }
 
 .close-button {

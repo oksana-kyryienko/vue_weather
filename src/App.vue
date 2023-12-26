@@ -1,17 +1,32 @@
+<!-- App.vue -->
+
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n({ useScope: 'global' })
+const translateDate = ref(false)
+
+const switchLanguage = () => {
+  locale.value === 'en' ? (locale.value = 'uk') : (locale.value = 'en')
+  localStorage.setItem('lang', locale.value)
+  translateDate.value = true
+  
+}
+
 </script>
 
 <template>
   <header>
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Weather</RouterLink>
-        <RouterLink to="/favorites">Favorites</RouterLink>
+        <RouterLink to="/">{{ $t('weather') }}</RouterLink>
+        <RouterLink to="/favorites">{{ $t('favorites') }}</RouterLink>
       </nav>
-  
     </div>
   </header>
+  <button @click="switchLanguage" class="switch-btn">{{ $t('switchLang') }}</button>
 
   <RouterView />
 </template>
@@ -29,6 +44,13 @@ header {
   max-height: 100vh;
 }
 
+.switch-btn {
+  background-color: aqua;
+  padding: 10px;
+}
+.switch-btn:hover {
+  background-color: aquamarine;
+}
 .logo {
   display: block;
   margin: 0 auto 2rem;

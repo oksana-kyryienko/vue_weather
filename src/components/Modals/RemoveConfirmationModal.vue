@@ -1,6 +1,6 @@
 <template>
   <modal-main :visible="visible">
-    <p>Are you sure you want to remove this weather card?</p>
+    <p>{{ $t('confirmationRemoveCard') }}</p>
     <button @click="confirmRemove" class="modal-btn">Yes</button>
     <button @click="cancelRemove" class="modal-btn">No</button>
   </modal-main>

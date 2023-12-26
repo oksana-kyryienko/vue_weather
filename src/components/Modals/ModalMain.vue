@@ -23,10 +23,10 @@ export default {
 <style scoped>
 .modal-content {
   background-color: lightgreen;
-  width: 70%;
   max-width: 500px;
+  min-width: 250px;
   max-height: 300px;
-  padding: 40px 30px;
+  padding: 30px;
   border-radius: 10px;
   position: fixed;
   left: 50%;
@@ -34,5 +34,9 @@ export default {
   transform: translate(-50%, -50%);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.5s ease-in-out;
+  z-index: 100000000;
+}
+
+@media (max-width: 768px) {
 }
 </style>

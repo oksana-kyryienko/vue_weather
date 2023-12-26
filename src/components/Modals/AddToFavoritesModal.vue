@@ -1,6 +1,6 @@
 <template>
   <modal-main :visible="visible">
-    <p>Added to Favorites!</p>
+    <p>{{ $t('confirmationAddFavorites') }}</p>
     <button @click="closeModal" class="modal-btn">OK</button>
   </modal-main>
 </template>

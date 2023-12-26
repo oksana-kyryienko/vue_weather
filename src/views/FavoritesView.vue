@@ -1,7 +1,7 @@
 <!-- FavoritesView.vue -->
 <template>
   <div class="favorites-container">
-    <h2 class="title">Favorite Cities</h2>
+    <h2 class="title">{{ $t('favoriteCities') }}</h2>
     <div v-if="favoriteCities.length > 0">
       <weather-card
         v-for="cityData in favoriteCities"
@@ -13,7 +13,7 @@
       />
     </div>
     <div v-else>
-      <p>No favorite cities added yet.</p>
+      <p>{{ $t('noFavoriteAdd') }}.</p>
     </div>
   </div>
 </template>
