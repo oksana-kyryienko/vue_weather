@@ -252,7 +252,8 @@ export default {
       this.cardToRemove = null
     },
     getCurrentDate() {
-      return getCurrentDate()
+      return getCurrentDate.call(this)
+  
     },
 
     getWeatherIconUrl(iconCode) {
